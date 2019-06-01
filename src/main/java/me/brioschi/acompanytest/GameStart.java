@@ -7,6 +7,8 @@ import me.brioschi.acompanytest.command.CommandParser;
 import me.brioschi.acompanytest.command.CommandResponseDTO;
 import me.brioschi.acompanytest.command.GameCommand;
 import me.brioschi.acompanytest.io.ScreenManager;
+import me.brioschi.acompanytest.monster.Experience;
+import me.brioschi.acompanytest.monster.MonsterRepository;
 import me.brioschi.acompanytest.world.*;
 
 import java.util.Optional;
@@ -19,11 +21,16 @@ public class GameStart {
 
         // TODO fix (start point in the map?, how identify the user?)
         Position currentPosition = new Position(0, 0);
-        CurrentPlayerStatus currentPlayerStatus = new CurrentPlayerStatus(currentPosition);
+        CurrentPlayerStatus currentPlayerStatus = new CurrentPlayerStatus(
+                currentPosition,
+                Experience.CALLOW
+        );
         WorldMapRepository worldMapRepository = new WorldMapRepository();
+        MonsterRepository monsterRepository = new MonsterRepository();
         GameEngine gameEngine = new GameEngine(
                 currentPlayerStatus,
-                worldMapRepository.loadCurrentMap()
+                worldMapRepository.loadCurrentMap(),
+                monsterRepository
         );
 
         CommandParser commandParser = new CommandParser();
@@ -32,6 +39,7 @@ public class GameStart {
         // Show current map
         screenManager.printCommandResult(
                 currentPlayerStatus,
+                monsterRepository,
                 gameEngine.enterCommand(new LookCommand())
         );
 
@@ -46,7 +54,7 @@ public class GameStart {
 
                 GameCommand currentGameCommand = optionalGameCommand.get();
                 CommandResponseDTO cmdResult = gameEngine.enterCommand(currentGameCommand);
-                screenManager.printCommandResult(currentPlayerStatus, cmdResult);
+                screenManager.printCommandResult(currentPlayerStatus, monsterRepository, cmdResult);
 
                 if (currentGameCommand instanceof ExitCommand) {
                     gameCompleted = true;

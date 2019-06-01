@@ -42,13 +42,14 @@ class WorldMapSpec extends Specification {
 
         given:
 
-        WorldMap worldMap = new WorldMap()
-
-        worldMap.addWorldItem(buildWorldItem(1, 1))
-        worldMap.addWorldItem(buildWorldItem(0, 1))
-        worldMap.addWorldItem(buildWorldItem(2, 1))
-        worldMap.addWorldItem(buildWorldItem(1, 0))
-        worldMap.addWorldItem(buildWorldItem(1, 2))
+        WorldMap worldMap = new WorldMapBuilder()
+                .addFloor(1, 1)
+                .addFloor(0, 1)
+                .addFloor(0, 1)
+                .addFloor(2, 1)
+                .addFloor(1, 0)
+                .addFloor(1, 2)
+                .build();
 
         Position startPosition = Mock(Position)
         Position endPosition = new Position(x, y)

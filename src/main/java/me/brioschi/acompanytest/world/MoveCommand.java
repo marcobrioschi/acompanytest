@@ -12,6 +12,10 @@ public class MoveCommand extends GameCommand {
         this.direction = direction;
     }
 
+    public Direction getDirection() {
+        return direction;
+    }
+
     @Override
     public CommandResponseDTO execute() {
         Position newPosition = currentPlayerStatus.getCurrentPosition().applyMovement(direction);

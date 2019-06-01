@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class WorldItem  extends AValueObject {
+public class WorldItem extends AValueObject {
 
     private final Position position;
     private final WorldItemType worldItemType;

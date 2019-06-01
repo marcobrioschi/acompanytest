@@ -1,5 +1,19 @@
 package me.brioschi.acompanytest.monster;
 
-public interface MonsterId {
-    // TODO: to implement
+import me.brioschi.acompanytest.base.AValueObject;
+
+public class MonsterId extends AValueObject {
+
+    private final String id;
+
+    public MonsterId(String id) {
+        super(MonsterId.class);
+        this.id = id;
+    }
+
+    @Override
+    protected int valueObjectHashCode() {
+        return id.hashCode();
+    }
+
 }

@@ -27,6 +27,14 @@ public class WorldMap {
         return map.containsKey(newPosition);
     }
 
+    public WorldItem getPlayerCurrentWorldItem(Position position) {
+        if (checkIfTheNewPositionIsValid(position)) {
+            return map.get(position);
+        } else {
+            throw new InvalidParameterException(position.toString());
+        }
+    }
+
     public WorldViewDTO getPlayerVisibleWorld(Position observerPosition) {
         List<WorldItem> visibleWorldItems = new ArrayList<>();
         for (int x = -STANDARD_RADIUS; x <= STANDARD_RADIUS; ++x) {

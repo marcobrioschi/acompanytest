@@ -6,6 +6,8 @@
 - rifattorizzare i test (builder etc.)
 - togliere il punto origine nella transizione
 - far generare il punto di partenza dalla mappa
+- review dei test / devono essere di unità
+- review dei test / builders & refactoring
 
 Do documentare:
 

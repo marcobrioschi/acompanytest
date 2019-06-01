@@ -23,7 +23,7 @@ class GameEngineSpec extends Specification {
         startPosition = Mock(Position)
         endPosition = Mock(Position)
         worldView = Mock(WorldViewDTO)
-        gameEngine = new GameEngine(currentPlayerStatus, worldMap)
+        gameEngine = new GameEngine(currentPlayerStatus, worldMap, null) // TODO: use a mock?
     }
 
     // TODO: mote these tests on MoveCommancSpec

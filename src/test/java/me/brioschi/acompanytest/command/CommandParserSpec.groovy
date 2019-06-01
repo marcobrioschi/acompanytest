@@ -1,10 +1,13 @@
 package me.brioschi.acompanytest.command
 
 import me.brioschi.acompanytest.gameengine.ExitCommand
+import me.brioschi.acompanytest.monster.FightCommand
 import me.brioschi.acompanytest.world.LookCommand
 import me.brioschi.acompanytest.world.MoveCommand
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import static me.brioschi.acompanytest.world.MoveCommand.Direction.*
 
 class CommandParserSpec extends Specification {
 
@@ -43,10 +46,10 @@ class CommandParserSpec extends Specification {
         where:
 
         cmdLine ||  direction
-        "north" |   Direction.NORTH
-        "south" |   Direction.SOUTH
-        "east"  |   Direction.EAST
-        "west"  |   Direction.WEST
+        "north" |   NORTH
+        "south" |   SOUTH
+        "east"  |   EAST
+        "west"  |   WEST
 
     }
 
@@ -66,11 +69,35 @@ class CommandParserSpec extends Specification {
 
     }
 
+    @Unroll
+    def "if the kill command is recognized, return it [#cmdLine > #monsterName]"(String cmdLine, String monsterName) {
+
+        given:
+
+        CommandParser commandParser = new CommandParser()
+
+        when:
+
+        Optional<GameCommand> result = commandParser.parseCommand(cmdLine)
+
+        then:
+
+        assert result.get() instanceof FightCommand
+        assert ((FightCommand)result.get()).getMonsterName() == monsterName
+
+        where:
+
+        cmdLine             ||  monsterName
+        "kill abaco"        ||  "abaco"
+        "kill nome mostro"  ||  "nome mostro"
+
+    }
+
     def "If the exit is recognized, return it"() {
 
         given:
 
-        CommandParser commandParser = new CommandParser();
+        CommandParser commandParser = new CommandParser()
 
         when:
 

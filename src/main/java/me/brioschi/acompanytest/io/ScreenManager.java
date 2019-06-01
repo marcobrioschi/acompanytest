@@ -3,11 +3,15 @@ package me.brioschi.acompanytest.io;
 import me.brioschi.acompanytest.command.CommandResponseDTO;
 import me.brioschi.acompanytest.command.CommandResultMessage;
 import me.brioschi.acompanytest.gameengine.CurrentPlayerStatus;
+import me.brioschi.acompanytest.monster.Monster;
+import me.brioschi.acompanytest.monster.MonsterId;
+import me.brioschi.acompanytest.monster.MonsterRepository;
 import me.brioschi.acompanytest.world.WorldItem;
 import me.brioschi.acompanytest.world.WorldViewDTO;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.List;
 import java.util.Scanner;
 
 public class ScreenManager {
@@ -28,11 +32,11 @@ public class ScreenManager {
         outputStream.print(" > ");
     }
 
-    public void printCommandResult(CurrentPlayerStatus currentPlayerStatus, CommandResponseDTO commandResponse) {
+    public void printCommandResult(CurrentPlayerStatus currentPlayerStatus, MonsterRepository monsterRepository, CommandResponseDTO commandResponse) {
 
         if (commandResponse.getVisibleWorld() != null) {
             WorldViewDTO visibleWorld = commandResponse.getVisibleWorld();
-            printVisibleWorld(currentPlayerStatus, visibleWorld);
+            printVisibleWorld(currentPlayerStatus, monsterRepository, visibleWorld);
         }
 
         if (commandResponse.getCommandResultMessage() != null) {
@@ -45,9 +49,10 @@ public class ScreenManager {
         outputStream.println("[ERROR] > " + cmdLine);
     }
 
-    private void printVisibleWorld(CurrentPlayerStatus currentPlayerStatus, WorldViewDTO visibleWorld) {
+    private void printVisibleWorld(CurrentPlayerStatus currentPlayerStatus, MonsterRepository monsterRepository, WorldViewDTO visibleWorld) {
 
         String currentItemDescription = null;
+        List<MonsterId> currentItemMonsterIdList = null;
 
         for (int y = visibleWorld.getYDim(); y >= 0; --y) {
             outputStream.print("          ");
@@ -56,7 +61,10 @@ public class ScreenManager {
                     WorldItem currentItem = visibleWorld.getWorldItem(x, y);
                     if (currentItem.getPosition().equals(currentPlayerStatus.getCurrentPosition())) {
                         currentItemDescription = currentItem.getDescription();
+                        currentItemMonsterIdList = currentItem.getMonsterIds();
                         outputStream.print("P");
+                    } else if ( (currentItem.getMonsterIds() != null) && (currentItem.getMonsterIds().size() > 0) ) {
+                        outputStream.print("@");
                     } else if (currentItem.getWorldItemType() == WorldItem.WorldItemType.STREET) {
                         outputStream.print("=");
                     } else if (currentItem.getWorldItemType() == WorldItem.WorldItemType.FLOOR) {
@@ -68,15 +76,25 @@ public class ScreenManager {
             }
             outputStream.println();
         }
+        outputStream.println();
 
         if ( (currentItemDescription != null) && (!"".equals(currentItemDescription)) ) {
             outputStream.println(currentItemDescription);
+            outputStream.println();
+        }
+
+        if ( currentItemMonsterIdList != null) {
+            for (MonsterId monsterId : currentItemMonsterIdList) {
+                Monster monster = monsterRepository.load(monsterId);
+                outputStream.println( "   @ " + monster.getName());
+            }
         }
 
     }
 
     private void printResultMessage(CommandResultMessage commandResultMessage) {
         outputStream.println("[MESSAGE] > " + commandResultMessage);
+        outputStream.println();
     }
 
 }
