@@ -1,11 +1,11 @@
 package me.brioschi.acompanytest.gameengine;
 
-import me.brioschi.acompanytest.character.Player;
-import me.brioschi.acompanytest.character.PlayerRepository;
-import me.brioschi.acompanytest.command.CommandResponseDTO;
-import me.brioschi.acompanytest.command.GameCommand;
-import me.brioschi.acompanytest.monster.MonsterRepository;
-import me.brioschi.acompanytest.world.WorldMap;
+import me.brioschi.acompanytest.domain.character.Player;
+import me.brioschi.acompanytest.persistence.PlayerRepository;
+import me.brioschi.acompanytest.gameengine.command.CommandResponseDTO;
+import me.brioschi.acompanytest.gameengine.command.GameCommand;
+import me.brioschi.acompanytest.persistence.MonsterRepository;
+import me.brioschi.acompanytest.domain.world.WorldMap;
 
 public class GameEngine {
 

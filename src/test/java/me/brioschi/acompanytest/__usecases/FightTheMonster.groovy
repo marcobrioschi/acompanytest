@@ -1,18 +1,19 @@
 package me.brioschi.acompanytest.__usecases
 
-import me.brioschi.acompanytest.character.PlayerRepository
-import me.brioschi.acompanytest.command.CommandResponseDTO
-import me.brioschi.acompanytest.command.CommandResultMessage
-import me.brioschi.acompanytest.character.Player
+import me.brioschi.acompanytest.WorldMapBuilder
+import me.brioschi.acompanytest.domain.character.Player
+import me.brioschi.acompanytest.domain.monster.Experience
+import me.brioschi.acompanytest.domain.monster.FightCommand
+import me.brioschi.acompanytest.domain.monster.Monster
+import me.brioschi.acompanytest.domain.monster.MonsterId
+import me.brioschi.acompanytest.domain.world.Position
+import me.brioschi.acompanytest.domain.world.WorldItem
+import me.brioschi.acompanytest.domain.world.WorldMap
 import me.brioschi.acompanytest.gameengine.GameEngine
-import me.brioschi.acompanytest.monster.Experience
-import me.brioschi.acompanytest.monster.FightCommand
-import me.brioschi.acompanytest.monster.Monster
-import me.brioschi.acompanytest.monster.MonsterId
-import me.brioschi.acompanytest.monster.MonsterRepository
-import me.brioschi.acompanytest.world.Position
-import me.brioschi.acompanytest.world.WorldItem
-import me.brioschi.acompanytest.world.WorldMap
+import me.brioschi.acompanytest.gameengine.command.CommandResponseDTO
+import me.brioschi.acompanytest.gameengine.command.CommandResultMessage
+import me.brioschi.acompanytest.persistence.MonsterRepository
+import me.brioschi.acompanytest.persistence.PlayerRepository
 import spock.lang.Specification
 
 class FightTheMonster extends Specification {
@@ -22,20 +23,20 @@ class FightTheMonster extends Specification {
         given:
 
         Player currentPlayer = new Player("The fighter", new Position(0, 0), Experience.CALLOW)
-        List<MonsterId> monsterIds = Arrays.asList(new MonsterId("monsterA"))
-        WorldMap worldMap = new WorldMap()
-        worldMap.addWorldItem(
-                new WorldItem(
-                        new Position(0, 0),
-                        WorldItem.WorldItemType.STREET,
-                        monsterIds
-                )
-        );
+
         MonsterRepository monsterRepository = new MonsterRepository();
+        MonsterId monsterId = new MonsterId("monsterA")
         monsterRepository.save(
-            new Monster(new MonsterId("monsterA"), "First Monster", "The first monster of the map", Experience.CALLOW, true)
+            new Monster(monsterId, "First Monster", "The first monster of the map", Experience.CALLOW, true)
         );
+
+        WorldMap worldMap = new WorldMapBuilder(0, 0)
+                .addStreet(0, 0)
+                .addMonsterId(0, 0, monsterId)
+                .build()
+
         PlayerRepository playerRepository = new PlayerRepository();
+
         GameEngine gameEngine = new GameEngine(worldMap, monsterRepository, playerRepository)
         FightCommand command = new FightCommand("First Monster")
 

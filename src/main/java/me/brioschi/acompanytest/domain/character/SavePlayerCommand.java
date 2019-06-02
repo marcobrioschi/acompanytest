@@ -1,16 +1,15 @@
-package me.brioschi.acompanytest.gameengine;
+package me.brioschi.acompanytest.domain.character;
 
 import me.brioschi.acompanytest.gameengine.command.CommandResponseDTO;
 import me.brioschi.acompanytest.gameengine.command.CommandResultMessage;
 import me.brioschi.acompanytest.gameengine.command.GameCommand;
 
-public class ExitCommand extends GameCommand {
+public class SavePlayerCommand extends GameCommand {
 
     @Override
     public CommandResponseDTO execute() {
-        return new CommandResponseDTO(
-                CommandResultMessage.HAVE_A_NICE_DAY
-        );
+        playerRepository.save(currentPlayer);
+        return new CommandResponseDTO(CommandResultMessage.PLAYER_SAVED);
     }
 
 }

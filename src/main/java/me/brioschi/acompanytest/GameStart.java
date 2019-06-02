@@ -1,16 +1,15 @@
 package me.brioschi.acompanytest;
 
-import me.brioschi.acompanytest.character.Player;
-import me.brioschi.acompanytest.character.PlayerRepository;
+import me.brioschi.acompanytest.domain.character.Player;
 import me.brioschi.acompanytest.gameengine.ExitCommand;
 import me.brioschi.acompanytest.gameengine.GameEngine;
-import me.brioschi.acompanytest.command.CommandParser;
-import me.brioschi.acompanytest.command.CommandResponseDTO;
-import me.brioschi.acompanytest.command.GameCommand;
-import me.brioschi.acompanytest.io.ScreenManager;
-import me.brioschi.acompanytest.monster.Experience;
-import me.brioschi.acompanytest.monster.MonsterRepository;
-import me.brioschi.acompanytest.world.*;
+import me.brioschi.acompanytest.gameengine.command.CommandParser;
+import me.brioschi.acompanytest.gameengine.command.CommandResponseDTO;
+import me.brioschi.acompanytest.gameengine.command.GameCommand;
+import me.brioschi.acompanytest.gameengine.io.ScreenManager;
+import me.brioschi.acompanytest.persistence.MonsterRepository;
+import me.brioschi.acompanytest.persistence.PlayerRepository;
+import me.brioschi.acompanytest.persistence.WorldMapRepository;
 
 import java.util.Optional;
 
@@ -18,10 +17,10 @@ public class GameStart {
 
     public static void main(String[] args) {
 
-        Player currentPlayer = null;
         WorldMapRepository worldMapRepository = new WorldMapRepository();
         MonsterRepository monsterRepository = new MonsterRepository();
         PlayerRepository playerRepository = new PlayerRepository();
+
         GameEngine gameEngine = new GameEngine(
                 worldMapRepository.loadCurrentMap(),
                 monsterRepository,
@@ -30,6 +29,8 @@ public class GameStart {
 
         CommandParser commandParser = new CommandParser();
         ScreenManager screenManager = new ScreenManager(System.in, System.out); // java.io.Console doesn't work on IDE!!!
+
+        Player currentPlayer = null;
 
         boolean gameCompleted = false;
         do {

@@ -1,15 +1,16 @@
-package me.brioschi.acompanytest.gameengine;
+package me.brioschi.acompanytest.domain.world;
 
 import me.brioschi.acompanytest.gameengine.command.CommandResponseDTO;
-import me.brioschi.acompanytest.gameengine.command.CommandResultMessage;
 import me.brioschi.acompanytest.gameengine.command.GameCommand;
 
-public class ExitCommand extends GameCommand {
+public class LookCommand extends GameCommand {
 
     @Override
     public CommandResponseDTO execute() {
         return new CommandResponseDTO(
-                CommandResultMessage.HAVE_A_NICE_DAY
+                worldMap.getPlayerVisibleWorld(
+                    currentPlayer.getCurrentPosition()
+                )
         );
     }
 
