@@ -90,7 +90,7 @@ public class ScreenManager {
         if ( currentItemMonsterIdList != null) {
             for (MonsterId monsterId : currentItemMonsterIdList) {
                 Monster monster = monsterRepository.load(monsterId);
-                outputStream.println( "   @ " + monster.getName());
+                outputStream.println( "   @ [" +  monster.getExperience().getExperience() + "] " + monster.getName() + ": " + monster.getDescription());
             }
             outputStream.println();
         }

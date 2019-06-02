@@ -17,8 +17,11 @@ public class GameStart {
 
     public static void main(String[] args) {
 
-        WorldMapRepository worldMapRepository = new WorldMapRepository();
-        MonsterRepository monsterRepository = new MonsterRepository();
+        // This is only for the demo !!!
+        DemoRepositoryCreator repositoryCreator = new DemoRepositoryCreator();
+
+        WorldMapRepository worldMapRepository = repositoryCreator.getWorldMapRepository();
+        MonsterRepository monsterRepository = repositoryCreator.getMonsterRepository();
         PlayerRepository playerRepository = new PlayerRepository();
 
         GameEngine gameEngine = new GameEngine(

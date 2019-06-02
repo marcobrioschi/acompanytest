@@ -30,6 +30,10 @@ public class Monster {
         return name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public Experience getExperience() {
         return experience;
     }

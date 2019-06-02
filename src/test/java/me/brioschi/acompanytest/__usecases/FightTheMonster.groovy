@@ -1,13 +1,12 @@
 package me.brioschi.acompanytest.__usecases
 
-import me.brioschi.acompanytest.WorldMapBuilder
+import me.brioschi.acompanytest.persistence.WorldMapBuilder
 import me.brioschi.acompanytest.domain.character.Player
 import me.brioschi.acompanytest.domain.monster.Experience
 import me.brioschi.acompanytest.domain.monster.FightCommand
 import me.brioschi.acompanytest.domain.monster.Monster
 import me.brioschi.acompanytest.domain.monster.MonsterId
 import me.brioschi.acompanytest.domain.world.Position
-import me.brioschi.acompanytest.domain.world.WorldItem
 import me.brioschi.acompanytest.domain.world.WorldMap
 import me.brioschi.acompanytest.gameengine.GameEngine
 import me.brioschi.acompanytest.gameengine.command.CommandResponseDTO

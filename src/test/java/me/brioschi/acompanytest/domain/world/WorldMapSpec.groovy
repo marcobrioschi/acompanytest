@@ -1,6 +1,6 @@
 package me.brioschi.acompanytest.domain.world
 
-import me.brioschi.acompanytest.WorldMapBuilder
+import me.brioschi.acompanytest.persistence.WorldMapBuilder
 import spock.lang.Specification
 import spock.lang.Unroll
 

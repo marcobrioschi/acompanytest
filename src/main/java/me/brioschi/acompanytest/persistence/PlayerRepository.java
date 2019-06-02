@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class PlayerRepository {
 
-    Map<String, Player> players = new Hashtable<>();
+    private Map<String, Player> players = new Hashtable<>();
 
     public Player load(String playerName) {
         return players.get(playerName);

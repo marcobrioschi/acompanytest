@@ -1,6 +1,6 @@
 package me.brioschi.acompanytest.__usecases
 
-import me.brioschi.acompanytest.WorldMapBuilder
+import me.brioschi.acompanytest.persistence.WorldMapBuilder
 import me.brioschi.acompanytest.domain.character.Player
 import me.brioschi.acompanytest.domain.monster.Experience
 import me.brioschi.acompanytest.domain.world.MoveCommand
