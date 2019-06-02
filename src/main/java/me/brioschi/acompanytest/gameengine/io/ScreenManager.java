@@ -50,7 +50,7 @@ public class ScreenManager {
     }
 
     public void printInvalidCommand(String cmdLine) {
-        outputStream.println("[ERROR] > " + cmdLine);
+        outputStream.println("This isn't a valid command: " + cmdLine);
     }
 
     private void printVisibleWorld(Player currentPlayer, MonsterRepository monsterRepository, WorldViewDTO visibleWorld) {
@@ -98,7 +98,7 @@ public class ScreenManager {
     }
 
     private void printResultMessage(CommandResultMessage commandResultMessage) {
-        outputStream.println("[MESSAGE] > " + commandResultMessage);
+        outputStream.println(" ... " + commandResultMessage.getDescription());
         outputStream.println();
     }
 

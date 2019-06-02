@@ -44,11 +44,11 @@ public class DemoRepositoryCreator {
     }
 
     private void generateWorldMap() {
-        String streetDescription = "You are on the street of damn, all people can kill you in a moment ...";
-        String RoomDescription1 = "In this room the evil usually speak with the soul of the dead people.";
+        String streetDescription = "You are on the street of damn, anyone can kill you in a moment ...";
+        String RoomDescription1 = "In this room the evil usually speak with the souls of the dead people.";
         String RoomDescription2 = "This is the house of the Aon, be quiet to do not wake him!";
-        String RoomDescription3 = "In the shadow the enemies are creating the weapons for Aon, the master of the infern ... keep attention!!!";
-        String RoomDescription4 = "Don't be ingenuous, also the walls are looking to you ... you are not alone ... run !!!";
+        String RoomDescription3 = "In the shadow the enemies are creating the weapons for Aon, the master of the hell ... keep attention!";
+        String RoomDescription4 = "Don't be ingenuous, also the walls are looking to you ... you are not alone ... run!";
         String RoomDescription5 = "In this room you hear the sound of the water ... but it's really water?";
         worldMap = new WorldMapBuilder(7, 1)
                 .addHorizontalStreet(3, 9, 1, streetDescription)
