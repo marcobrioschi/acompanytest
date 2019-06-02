@@ -18,9 +18,9 @@ public class MoveCommand extends GameCommand {
 
     @Override
     public CommandResponseDTO execute() {
-        Position newPosition = currentPlayerStatus.getCurrentPosition().applyMovement(direction);
+        Position newPosition = currentPlayer.getCurrentPosition().applyMovement(direction);
         if (worldMap.checkIfTheNewPositionIsValid(newPosition)) {
-            currentPlayerStatus.setCurrentPosition(newPosition);
+            currentPlayer.setCurrentPosition(newPosition);
             return new CommandResponseDTO(
                     worldMap.getPlayerVisibleWorld(newPosition)
             );

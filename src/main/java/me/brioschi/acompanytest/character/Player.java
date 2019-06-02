@@ -1,34 +1,37 @@
-package me.brioschi.acompanytest.gameengine;
+package me.brioschi.acompanytest.character;
 
 import me.brioschi.acompanytest.monster.Experience;
 import me.brioschi.acompanytest.world.Position;
 
-public class CurrentPlayerStatus {
+public class Player {
 
+    private String name;
     private Position currentPosition;
     private Experience currentExperience;
 
-    public CurrentPlayerStatus(
+    public Player(
+            String name,
             Position currentPosition,
             Experience currentExperience) {
+        this.name = name;
         this.currentPosition = currentPosition;
         this.currentExperience = currentExperience;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Position getCurrentPosition() {
         return currentPosition;
     }
 
-    public Experience getCurrentExperience() {
-        return currentExperience;
-    }
-
     public void setCurrentPosition(Position currentPosition) {
         this.currentPosition = currentPosition;
     }
 
-    public void setCurrentExperience(Experience currentExperience) {
-        this.currentExperience = currentExperience;
+    public Experience getCurrentExperience() {
+        return currentExperience;
     }
 
     public void increaseExperience(Experience pExperience) {

@@ -1,6 +1,7 @@
 package me.brioschi.acompanytest;
 
-import me.brioschi.acompanytest.gameengine.CurrentPlayerStatus;
+import me.brioschi.acompanytest.character.Player;
+import me.brioschi.acompanytest.character.PlayerRepository;
 import me.brioschi.acompanytest.gameengine.ExitCommand;
 import me.brioschi.acompanytest.gameengine.GameEngine;
 import me.brioschi.acompanytest.command.CommandParser;
@@ -17,44 +18,34 @@ public class GameStart {
 
     public static void main(String[] args) {
 
-        // TODO manage args
-
-        // TODO fix (start point in the map?, how identify the user?)
-        Position currentPosition = new Position(0, 0);
-        CurrentPlayerStatus currentPlayerStatus = new CurrentPlayerStatus(
-                currentPosition,
-                Experience.CALLOW
-        );
+        Player currentPlayer = null;
         WorldMapRepository worldMapRepository = new WorldMapRepository();
         MonsterRepository monsterRepository = new MonsterRepository();
+        PlayerRepository playerRepository = new PlayerRepository();
         GameEngine gameEngine = new GameEngine(
-                currentPlayerStatus,
                 worldMapRepository.loadCurrentMap(),
-                monsterRepository
+                monsterRepository,
+                playerRepository
         );
 
         CommandParser commandParser = new CommandParser();
         ScreenManager screenManager = new ScreenManager(System.in, System.out); // java.io.Console doesn't work on IDE!!!
 
-        // Show current map
-        screenManager.printCommandResult(
-                currentPlayerStatus,
-                monsterRepository,
-                gameEngine.enterCommand(new LookCommand())
-        );
-
         boolean gameCompleted = false;
         do {
 
-            screenManager.prompt();
+            screenManager.prompt(currentPlayer);
             String cmdLine = screenManager.nextLine();
 
-            Optional<GameCommand> optionalGameCommand = commandParser.parseCommand(cmdLine);
+            Optional<GameCommand> optionalGameCommand = commandParser.parseCommand(cmdLine, (currentPlayer == null));
             if (optionalGameCommand.isPresent()) {
 
                 GameCommand currentGameCommand = optionalGameCommand.get();
-                CommandResponseDTO cmdResult = gameEngine.enterCommand(currentGameCommand);
-                screenManager.printCommandResult(currentPlayerStatus, monsterRepository, cmdResult);
+                CommandResponseDTO cmdResult = gameEngine.enterCommand(currentPlayer, currentGameCommand);
+                if (cmdResult.getCurrentPlayer() != null) {
+                    currentPlayer = cmdResult.getCurrentPlayer();
+                }
+                screenManager.printCommandResult(currentPlayer, monsterRepository, cmdResult);
 
                 if (currentGameCommand instanceof ExitCommand) {
                     gameCompleted = true;

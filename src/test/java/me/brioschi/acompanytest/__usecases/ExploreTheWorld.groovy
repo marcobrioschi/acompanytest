@@ -1,7 +1,8 @@
 package me.brioschi.acompanytest.__usecases
 
+import me.brioschi.acompanytest.character.PlayerRepository
 import me.brioschi.acompanytest.command.CommandResponseDTO
-import me.brioschi.acompanytest.gameengine.CurrentPlayerStatus
+import me.brioschi.acompanytest.character.Player
 import me.brioschi.acompanytest.monster.Experience
 import me.brioschi.acompanytest.monster.MonsterRepository
 import me.brioschi.acompanytest.world.MoveCommand
@@ -9,7 +10,6 @@ import me.brioschi.acompanytest.gameengine.GameEngine
 import me.brioschi.acompanytest.world.Position
 import me.brioschi.acompanytest.world.WorldItem
 import me.brioschi.acompanytest.world.WorldMap
-import spock.lang.Ignore
 import spock.lang.Specification
 
 class ExploreTheWorld extends Specification {
@@ -19,7 +19,8 @@ class ExploreTheWorld extends Specification {
         // TODO: rifare salendo di livello nell'interfaccia
 
         given:
-        CurrentPlayerStatus currentPlayerStatus = new CurrentPlayerStatus(
+        Player currentPlayer = new Player(
+                "The Player",
                 new Position(0, 0),
                 Experience.CALLOW
         );
@@ -37,12 +38,13 @@ class ExploreTheWorld extends Specification {
                 new WorldItem(new Position(1, 1), WorldItem.WorldItemType.FLOOR)
         );
         MonsterRepository monsterRepository = new MonsterRepository()
-        GameEngine gameEngine = new GameEngine(currentPlayerStatus, worldMap, monsterRepository)
+        PlayerRepository playerRepository = new PlayerRepository()
+        GameEngine gameEngine = new GameEngine(worldMap, monsterRepository, playerRepository)
         MoveCommand command = new MoveCommand(MoveCommand.Direction.NORTH)
 
         when:
 
-        CommandResponseDTO response = gameEngine.enterCommand(command)
+        CommandResponseDTO response = gameEngine.enterCommand(currentPlayer, command)
 
         then:
 

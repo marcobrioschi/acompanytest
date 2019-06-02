@@ -1,5 +1,8 @@
 package me.brioschi.acompanytest.command
 
+import me.brioschi.acompanytest.character.CreatePlayerCommand
+import me.brioschi.acompanytest.character.LoadPlayerCommand
+import me.brioschi.acompanytest.character.SavePlayerCommand
 import me.brioschi.acompanytest.gameengine.ExitCommand
 import me.brioschi.acompanytest.monster.FightCommand
 import me.brioschi.acompanytest.world.LookCommand
@@ -11,15 +14,17 @@ import static me.brioschi.acompanytest.world.MoveCommand.Direction.*
 
 class CommandParserSpec extends Specification {
 
+    CommandParser commandParser
+
+    def setup() {
+        commandParser = new CommandParser()
+    }
+
     def "If not a valid command is recognized, return an empty option"() {
-
-        given:
-
-        CommandParser commandParser = new CommandParser()
 
         when:
 
-        Optional<GameCommand> result = commandParser.parseCommand("abcdefghijeklm")
+        Optional<GameCommand> result = commandParser.parseCommand("abcdefghijeklm", false)
 
         then:
 
@@ -30,13 +35,9 @@ class CommandParserSpec extends Specification {
     @Unroll
     def "If a move command is recognized, return it: #cmdLine -> #direction"(String cmdLine, MoveCommand.Direction direction) {
 
-        given:
-
-        CommandParser commandParser = new CommandParser()
-
         when:
 
-        Optional<GameCommand> result = commandParser.parseCommand(cmdLine)
+        Optional<GameCommand> result = commandParser.parseCommand(cmdLine, false)
 
         then:
 
@@ -55,13 +56,9 @@ class CommandParserSpec extends Specification {
 
     def "If the look command is recognized, return it"() {
 
-        given:
-
-        CommandParser commandParser = new CommandParser()
-
         when:
 
-        Optional<GameCommand> result = commandParser.parseCommand("look")
+        Optional<GameCommand> result = commandParser.parseCommand("look", false)
 
         then:
 
@@ -72,13 +69,9 @@ class CommandParserSpec extends Specification {
     @Unroll
     def "if the kill command is recognized, return it [#cmdLine > #monsterName]"(String cmdLine, String monsterName) {
 
-        given:
-
-        CommandParser commandParser = new CommandParser()
-
         when:
 
-        Optional<GameCommand> result = commandParser.parseCommand(cmdLine)
+        Optional<GameCommand> result = commandParser.parseCommand(cmdLine, false)
 
         then:
 
@@ -93,15 +86,48 @@ class CommandParserSpec extends Specification {
 
     }
 
-    def "If the exit is recognized, return it"() {
-
-        given:
-
-        CommandParser commandParser = new CommandParser()
+    def "if the create player command is recognized, return it"() {
 
         when:
 
-        Optional<GameCommand> result = commandParser.parseCommand("exit")
+        Optional<GameCommand> result = commandParser.parseCommand("create mike the fist", false)
+
+        then:
+
+        assert result.get() instanceof CreatePlayerCommand
+        assert ((CreatePlayerCommand)result.get()).getPlayerName() == "mike the fist"
+    }
+
+    def "If the load command is recognized, return it"() {
+
+        when:
+
+        Optional<GameCommand> result = commandParser.parseCommand("load the player", false)
+
+        then:
+
+        assert result.get() instanceof LoadPlayerCommand
+        assert ((LoadPlayerCommand)result.get()).getPlayerName() == "the player"
+
+    }
+
+    def "If the save is recognized, return it"() {
+
+        when:
+
+        Optional<GameCommand> result = commandParser.parseCommand("save", false)
+
+        then:
+
+        assert result.get() instanceof SavePlayerCommand
+
+    }
+
+    def "If the exit is recognized, return it"() {
+
+        when:
+
+        Optional<GameCommand> result = commandParser.parseCommand("exit", false)
 
         then:
 

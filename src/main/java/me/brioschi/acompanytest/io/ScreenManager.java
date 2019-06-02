@@ -2,7 +2,7 @@ package me.brioschi.acompanytest.io;
 
 import me.brioschi.acompanytest.command.CommandResponseDTO;
 import me.brioschi.acompanytest.command.CommandResultMessage;
-import me.brioschi.acompanytest.gameengine.CurrentPlayerStatus;
+import me.brioschi.acompanytest.character.Player;
 import me.brioschi.acompanytest.monster.Monster;
 import me.brioschi.acompanytest.monster.MonsterId;
 import me.brioschi.acompanytest.monster.MonsterRepository;
@@ -28,15 +28,19 @@ public class ScreenManager {
         return inputScanner.nextLine();
     }
 
-    public void prompt() {
-        outputStream.print(" > ");
+    public void prompt(Player currentPlayer) {
+        if (currentPlayer != null) {
+            outputStream.println(" " + currentPlayer.getName() + " [" + currentPlayer.getCurrentExperience().getExperience() + "] > ");
+        } else {
+            outputStream.println(" > ");
+        }
     }
 
-    public void printCommandResult(CurrentPlayerStatus currentPlayerStatus, MonsterRepository monsterRepository, CommandResponseDTO commandResponse) {
+    public void printCommandResult(Player currentPlayer, MonsterRepository monsterRepository, CommandResponseDTO commandResponse) {
 
         if (commandResponse.getVisibleWorld() != null) {
             WorldViewDTO visibleWorld = commandResponse.getVisibleWorld();
-            printVisibleWorld(currentPlayerStatus, monsterRepository, visibleWorld);
+            printVisibleWorld(currentPlayer, monsterRepository, visibleWorld);
         }
 
         if (commandResponse.getCommandResultMessage() != null) {
@@ -49,7 +53,7 @@ public class ScreenManager {
         outputStream.println("[ERROR] > " + cmdLine);
     }
 
-    private void printVisibleWorld(CurrentPlayerStatus currentPlayerStatus, MonsterRepository monsterRepository, WorldViewDTO visibleWorld) {
+    private void printVisibleWorld(Player currentPlayer, MonsterRepository monsterRepository, WorldViewDTO visibleWorld) {
 
         String currentItemDescription = null;
         List<MonsterId> currentItemMonsterIdList = null;
@@ -59,7 +63,7 @@ public class ScreenManager {
             for (int x = 0; x <= visibleWorld.getXDim(); ++x) {
                 if (visibleWorld.getWorldItem(x, y) != null) {
                     WorldItem currentItem = visibleWorld.getWorldItem(x, y);
-                    if (currentItem.getPosition().equals(currentPlayerStatus.getCurrentPosition())) {
+                    if (currentItem.getPosition().equals(currentPlayer.getCurrentPosition())) {
                         currentItemDescription = currentItem.getDescription();
                         currentItemMonsterIdList = currentItem.getMonsterIds();
                         outputStream.print("P");

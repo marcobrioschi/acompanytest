@@ -1,9 +1,8 @@
 package me.brioschi.acompanytest.gameengine
 
+import me.brioschi.acompanytest.character.Player
 import me.brioschi.acompanytest.command.CommandResponseDTO
 import me.brioschi.acompanytest.command.CommandResultMessage
-import me.brioschi.acompanytest.world.LookCommand
-import me.brioschi.acompanytest.world.Position
 import me.brioschi.acompanytest.world.WorldMap
 import me.brioschi.acompanytest.world.WorldViewDTO
 import spock.lang.Specification
@@ -15,12 +14,12 @@ class ExitCommandSpec extends Specification{
         given:
 
         WorldMap worldMap = Mock(WorldMap)
-        CurrentPlayerStatus currentPlayerStatus = Mock(CurrentPlayerStatus)
+        Player currentPlayerStatus = Mock(Player)
         WorldViewDTO worldView = Mock(WorldViewDTO)
 
         ExitCommand command = new ExitCommand()
         command.setWorldMap(worldMap)
-        command.setCurrentPlayerStatus(currentPlayerStatus)
+        command.setCurrentPlayer(currentPlayerStatus)
 
         when:
 

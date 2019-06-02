@@ -1,5 +1,6 @@
 package me.brioschi.acompanytest.gameengine
 
+import me.brioschi.acompanytest.character.Player
 import me.brioschi.acompanytest.command.CommandResponseDTO
 import me.brioschi.acompanytest.command.CommandResultMessage
 import me.brioschi.acompanytest.world.MoveCommand
@@ -11,7 +12,7 @@ import spock.lang.Specification
 class GameEngineSpec extends Specification {
 
     WorldMap worldMap
-    CurrentPlayerStatus currentPlayerStatus
+    Player currentPlayer
     Position startPosition
     Position endPosition
     WorldViewDTO worldView
@@ -19,11 +20,11 @@ class GameEngineSpec extends Specification {
 
     def setup() {
         worldMap = Mock(WorldMap)
-        currentPlayerStatus = Mock(CurrentPlayerStatus)
+        currentPlayer = Mock(Player)
         startPosition = Mock(Position)
         endPosition = Mock(Position)
         worldView = Mock(WorldViewDTO)
-        gameEngine = new GameEngine(currentPlayerStatus, worldMap, null) // TODO: use a mock?
+        gameEngine = new GameEngine(worldMap, null, null) // TODO: use a mock?
     }
 
     // TODO: mote these tests on MoveCommancSpec
@@ -35,14 +36,14 @@ class GameEngineSpec extends Specification {
 
         when:
 
-        CommandResponseDTO response = gameEngine.enterCommand(moveCommand)
+        CommandResponseDTO response = gameEngine.enterCommand(currentPlayer, moveCommand)
 
         then:
 
-        1 * currentPlayerStatus.getCurrentPosition() >> startPosition
+        1 * currentPlayer.getCurrentPosition() >> startPosition
         1 * startPosition.applyMovement(MoveCommand.Direction.NORTH) >> endPosition
         1 * worldMap.checkIfTheNewPositionIsValid(endPosition) >> true
-        1 * currentPlayerStatus.setCurrentPosition(endPosition)
+        1 * currentPlayer.setCurrentPosition(endPosition)
         1 * worldMap.getPlayerVisibleWorld(endPosition) >> worldView
 
         assert response.getVisibleWorld() == worldView
@@ -57,11 +58,11 @@ class GameEngineSpec extends Specification {
 
         when:
 
-        CommandResponseDTO response = gameEngine.enterCommand(moveCommand)
+        CommandResponseDTO response = gameEngine.enterCommand(currentPlayer, moveCommand)
 
         then:
 
-        1 * currentPlayerStatus.getCurrentPosition() >> startPosition
+        1 * currentPlayer.getCurrentPosition() >> startPosition
         1 * startPosition.applyMovement(MoveCommand.Direction.SOUTH) >> endPosition
         1 * worldMap.checkIfTheNewPositionIsValid(endPosition) >> false
 

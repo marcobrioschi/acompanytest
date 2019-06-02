@@ -1,5 +1,8 @@
 package me.brioschi.acompanytest.command;
 
+import me.brioschi.acompanytest.character.CreatePlayerCommand;
+import me.brioschi.acompanytest.character.LoadPlayerCommand;
+import me.brioschi.acompanytest.character.SavePlayerCommand;
 import me.brioschi.acompanytest.gameengine.ExitCommand;
 import me.brioschi.acompanytest.monster.FightCommand;
 import me.brioschi.acompanytest.world.LookCommand;
@@ -9,12 +12,47 @@ import java.util.Optional;
 
 public class CommandParser {
 
-    public Optional<GameCommand> parseCommand(String cmdLine) {
-
-        GameCommand result;
+    public Optional<GameCommand> parseCommand(String cmdLine, boolean onlyInitCommands) {
 
         String[] cmdLineParams = cmdLine.split(" ");
-        switch(cmdLineParams[0]) {
+        String firstParam = cmdLineParams[0];
+
+        GameCommand result = parseInitCommand(firstParam, cmdLine);
+        if ( !onlyInitCommands && (result == null) ) {
+            result = parseCommonCommand(firstParam, cmdLine);
+        }
+
+        if (result != null) {
+            return Optional.of(result);
+        } else {
+            return Optional.empty();
+        }
+
+    }
+
+    private GameCommand parseInitCommand(String firstParam, String cmdLine) {
+        GameCommand result;
+        switch(firstParam) {
+            case CREATE:
+                result = new CreatePlayerCommand(
+                        cmdLine.replaceFirst(CREATE, "").trim()
+                );
+                break;
+            case LOAD:
+                result = new LoadPlayerCommand(
+                        cmdLine.replaceFirst(LOAD, "").trim()
+                );
+                break;
+            default:
+                result = null;
+                break;
+        }
+        return result;
+    }
+
+    private GameCommand parseCommonCommand(String firstParam, String cmdLine) {
+        GameCommand result;
+        switch(firstParam) {
             case MOVE_NORTH:
                 result = new MoveCommand(MoveCommand.Direction.NORTH);
                 break;
@@ -35,21 +73,17 @@ public class CommandParser {
                         cmdLine.replaceFirst(KILL, "").trim()
                 );
                 break;
+            case SAVE:
+                result = new SavePlayerCommand();
+                break;
             case EXIT:
                 result = new ExitCommand();
                 break;
             default:
                 result = null;
                 break;
-
         }
-
-        if (result != null) {
-            return Optional.of(result);
-        } else {
-            return Optional.empty();
-        }
-
+        return result;
     }
 
     // TODO move to a file (i18n)
@@ -59,6 +93,9 @@ public class CommandParser {
     private static final String MOVE_WEST = "west";
     private static final String LOOK_MAP = "look";
     private static final String KILL = "kill";
+    private static final String CREATE = "create";
+    private static final String LOAD = "load";
+    private static final String SAVE = "save";
     private static final String EXIT = "exit";
 
 }

@@ -40,7 +40,7 @@ public class FightCommand extends GameCommand {
     private List<MonsterId> findMonstersInTheCurrentPosition() {
         WorldItem currentWorldItem =
                 worldMap.getPlayerCurrentWorldItem(
-                        currentPlayerStatus.getCurrentPosition()
+                        currentPlayer.getCurrentPosition()
                 );
         return currentWorldItem.getMonsterIds();
     }
@@ -49,14 +49,14 @@ public class FightCommand extends GameCommand {
 
         Monster currentMonster = opMonster.get();
         Experience monsterExperience = currentMonster.getExperience();
-        Experience playerExperience = currentPlayerStatus.getCurrentExperience();
+        Experience playerExperience = currentPlayer.getCurrentExperience();
 
         CommandResultMessage resultMessage;
         if (currentMonster.fight(playerExperience)) {
-            currentPlayerStatus.increaseExperience(monsterExperience);
+            currentPlayer.increaseExperience(monsterExperience);
             resultMessage = CommandResultMessage.YOU_WIN_THE_FIGHT;
         } else {
-            currentPlayerStatus.decreaseExperience(monsterExperience);
+            currentPlayer.decreaseExperience(monsterExperience);
             resultMessage = CommandResultMessage.YOU_LOSE_THE_FIGHT;
         }
 

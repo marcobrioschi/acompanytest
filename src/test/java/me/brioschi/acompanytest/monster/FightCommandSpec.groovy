@@ -2,7 +2,7 @@ package me.brioschi.acompanytest.monster
 
 import me.brioschi.acompanytest.command.CommandResponseDTO
 import me.brioschi.acompanytest.command.CommandResultMessage
-import me.brioschi.acompanytest.gameengine.CurrentPlayerStatus
+import me.brioschi.acompanytest.character.Player
 import me.brioschi.acompanytest.world.Position
 import me.brioschi.acompanytest.world.WorldItem
 import me.brioschi.acompanytest.world.WorldMap
@@ -22,7 +22,7 @@ class FightCommandSpec extends Specification {
     Experience playerExperience
     Experience monsterExperience
 
-    CurrentPlayerStatus currentPlayerStatus
+    Player currentPlayerStatus
 
     def setup() {
 
@@ -49,7 +49,7 @@ class FightCommandSpec extends Specification {
         }
 
         playerExperience = Mock(Experience)
-        currentPlayerStatus = Mock(CurrentPlayerStatus) {
+        currentPlayerStatus = Mock(Player) {
             getCurrentPosition() >> position
             getCurrentExperience() >> playerExperience
         }
@@ -60,7 +60,7 @@ class FightCommandSpec extends Specification {
 
         FightCommand command = new FightCommand(monsterName)
 
-        command.setCurrentPlayerStatus(currentPlayerStatus)
+        command.setCurrentPlayer(currentPlayerStatus)
         command.setWorldMap(worldMap)
         command.setMonsterRepository(monsterRepository)
 

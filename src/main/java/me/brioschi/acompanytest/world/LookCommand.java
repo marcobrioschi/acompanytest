@@ -9,7 +9,7 @@ public class LookCommand extends GameCommand {
     public CommandResponseDTO execute() {
         return new CommandResponseDTO(
                 worldMap.getPlayerVisibleWorld(
-                    currentPlayerStatus.getCurrentPosition()
+                    currentPlayer.getCurrentPosition()
                 )
         );
     }

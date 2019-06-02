@@ -1,7 +1,7 @@
 package me.brioschi.acompanytest.world
 
 import me.brioschi.acompanytest.command.CommandResponseDTO
-import me.brioschi.acompanytest.gameengine.CurrentPlayerStatus
+import me.brioschi.acompanytest.character.Player
 import spock.lang.Specification
 
 class LookCommandSpec extends Specification {
@@ -11,13 +11,13 @@ class LookCommandSpec extends Specification {
         given:
 
         WorldMap worldMap = Mock(WorldMap)
-        CurrentPlayerStatus currentPlayerStatus = Mock(CurrentPlayerStatus)
+        Player currentPlayerStatus = Mock(Player)
         Position position = Mock(Position)
         WorldViewDTO worldView = Mock(WorldViewDTO)
 
         LookCommand command = new LookCommand()
         command.setWorldMap(worldMap)
-        command.setCurrentPlayerStatus(currentPlayerStatus)
+        command.setCurrentPlayer(currentPlayerStatus)
 
         when:
 
